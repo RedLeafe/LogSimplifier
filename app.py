@@ -1,30 +1,18 @@
-from openai import OpenAI
 import streamlit as st
-import os
-from dotenv import load_dotenv
+import requests
 
-load_dotenv('.env')
-client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+st.title("IDS Alert Simplifier For Non Experts")
 
-st.title("Log Simplifier For Non Experts")
-
-user_input = st.text_area("Enter your log:")
+user_input = st.text_area("Enter your alert:")
 
 if st.button("Simplify!"):
     if user_input:
-        prompt_message = "Simplify the following log entry in plain language for non-experts. Make it only one sentence, include number of attempts, IP addresses, who did it, and if it was suspicious or not."
-        messages = [
-            {"role": "system", "content": prompt_message},
-            {"role": "user", "content": user_input}
-        ]
-        response = client.chat.completions.create(
-            model=os.getenv('FINE_TUNED_MODEL'),  
-            messages=messages,
-            max_tokens=100,
-            temperature=0,
-            top_p=1
-        )
-        simplified_log = response.choices[0].message.content.strip()
-        st.text_area("Simplified Log:", value=simplified_log, height=200)
+        response = requests.post("http://localhost:8000/simplify-alert", json={"alert": user_input})
+
+        if response.status_code == 200:
+            simplified_log = response.json().get("simplified_log", "No simplified log returned.")
+            st.text_area("Simplified Log:", value=simplified_log, height=200)
+        else:
+            st.write("Error: Could not process the alert.")
     else:
-        st.write("Enter Here.")
+        st.write("Please enter an alert.")

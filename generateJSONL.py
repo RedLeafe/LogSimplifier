@@ -12,7 +12,6 @@ with open(output_file, 'w') as jsonlfile:
         prompt = row[0].strip() if row[0] else ""
         completion = row[1].strip() if row[1] else ""
  
-        # Create chat-formatted data
         chat_data = {
             "messages": [
                 {"role": "user", "content": prompt},
