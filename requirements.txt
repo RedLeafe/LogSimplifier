@@ -1,0 +1,8 @@
+streamlit
+fastapi
+openai
+elasticsearch
+jsonlines
+python-dotenv
+pydantic
+uvicorn
