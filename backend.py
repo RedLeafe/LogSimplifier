@@ -41,7 +41,7 @@ async def simplify_alert(request: AlertRequest):
         
         retrieved_info = retrieve_relevant_info(alert_data, knowledge_base)
         
-        prompt_message = "Simplify the following log entry in plain language for non-experts. Make it only one sentence, include number of attempts, IP addresses, who did it, and if it was suspicious or not."
+        prompt_message = "Simplify the following log entry in plain language for non-experts. Make it only one sentence, include number of attempts, IP addresses, who did it."
         context = "\n".join(retrieved_info)
         full_prompt = f"{prompt_message}\n\nAlert: {alert_data}\n\nRelevant Information:\n{context}"
 
